@@ -237,3 +237,8 @@ if (isFetching) {
 
 1. Написать сценарий тестов, на тот случай, если в localstorage нет ключа.
 1. Переписать свои саги под работу с axios.
+
+
+## Задачи. III часть
+
+[Смотреть тут](https://github.com/dex157/homework_facegit/tree/3-part)
