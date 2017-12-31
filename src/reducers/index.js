@@ -1,10 +1,14 @@
 import {combineReducers} from 'redux';
-// import users from './users.js';
+import users from './users.js';
 // import followers from './followers';
-// import auth from './auth';
+import auth from './auth';
+
+export const getName = state => {
+  return state.name;
+};
 
 export default combineReducers({
-  // auth,
+  auth,
   // followers,
-  // users,
+  users
 });
