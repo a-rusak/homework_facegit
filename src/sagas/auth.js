@@ -1,8 +1,18 @@
+import {
+  take,
+  put,
+  call,
+  select,
+  takeLatest
+} from 'redux-saga/effects';
 import { authorize, logout } from '../actions/auth';
-import { request } from '../actions/users';
-import { take, put, call, select, takeLatest } from 'redux-saga/effects';
+import { request, success } from '../actions/users';
 import { setTokenApi, clearTokenApi } from '../api';
-import { getIsAuthorized } from '../reducers/auth';
+import {
+  getIsAuthorized,
+  getToken,
+  getName
+} from '../reducers/auth';
 import {
   getTokenFromLocalStorage,
   setTokenToLocalStorage,
@@ -10,29 +20,38 @@ import {
 } from '../localStorage';
 
 export function* authFlow() {
-  console.log('authFlow');
   while (true) {
     const isAuthorized = yield select(getIsAuthorized);
-    const localStorageToken = yield call(getTokenFromLocalStorage);
+    const localStorageToken = yield call(
+      getTokenFromLocalStorage
+    );
     let token;
+
+    console.log(
+      'isAuthorized:',
+      isAuthorized,
+      'localStorageToken:',
+      localStorageToken
+    );
 
     if (!isAuthorized) {
       if (localStorageToken) {
         token = localStorageToken;
-        yield put(authorize());
-        console.log('put(authorize()');
+        const name = yield select(getName);
+        yield put(authorize({name, token}));
+        console.log('put authorize');
       } else {
-        const action = yield take(authorize);
-        token = action.payload;
-        console.log('yield take(authorize)');
+        yield take(authorize);
+        console.log('take authorize');
+        token = yield select(getToken);
       }
-      console.log('localStorageToken');
     }
 
+    token = yield select(getToken);
     yield call(setTokenApi, token);
-    yield call(setTokenToLocalStorage, token);
     yield put(request());
-    console.log('saga');
+    yield take(success);
+    yield call(setTokenToLocalStorage, token);
 
     yield take(logout);
     yield call(removeTokenFromLocalStorage);

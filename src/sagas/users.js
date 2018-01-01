@@ -9,13 +9,8 @@ import {
   put,
   takeLatest
 } from 'redux-saga/effects';
-import { setTokenApi, getUserInformation } from '../api';
+import { getUserInformation } from '../api';
 import { getName } from '../reducers/auth';
-/* import {
-  getTokenFromLocalStorage,
-  setTokenToLocalStorage,
-  removeTokenFromLocalStorage
-} from '../localStorage'; */
 
 function* fetchUsers(action) {
   try {

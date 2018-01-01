@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { authorize } from '../../actions/auth';
+import {getName, getToken} from '../../reducers/auth';
 
 class AuthPage extends PureComponent {
   state = {
-    name: `dex157`,
-    token: ``
+    name: this.props.name,
+    token: this.props.token
   };
 
   onSubmit = evt => {
@@ -42,12 +43,25 @@ class AuthPage extends PureComponent {
         <button onClick={this.onSubmit}>
           GET FOLLOWERS
         </button>
+        <p>
+          Получить токен нужно на своей странице github,
+          перейдите по{' '}
+          <a href="https://github.com/settings/tokens">
+            адресу
+          </a>{' '}
+          и создайте себе токен. Запишите куда нибудь токен,
+          так как после создания доступ к нему будет только
+          один раз.
+        </p>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  name: getName(state),
+  token: getToken(state)
+});
 
 const mapDispatchToProps = {
   authorize

@@ -6,3 +6,15 @@ body {
   color: #aaa;
   padding: 1em;
 }
+
+a {
+  color: orange;
+}
+
+h1, h2 {
+  font-weight: lighter;
+}
+
+h3, h4 {
+  font-weight: normal;
+}
