@@ -1,13 +1,41 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { authorize } from '../../actions/auth';
-import {getName, getToken} from '../../reducers/auth';
+import {
+  getName,
+  getToken,
+  getIsAuthorized
+} from '../../reducers/auth';
+import { getTokenFromLocalStorage } from '../../localStorage';
 
 class AuthPage extends PureComponent {
   state = {
     name: this.props.name,
     token: this.props.token
   };
+
+  componentDidMount() {
+    const token = getTokenFromLocalStorage();
+    if (token) {
+      this.setState({ token });
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { name, token, isAuthorized, history } = newProps;
+
+    console.log(
+      'componentWillReceiveProps',
+      name,
+      token,
+      isAuthorized,
+      history
+    );
+
+    isAuthorized &&
+      token &&
+      this.props.history.push(`/user/${name}`);
+  }
 
   onSubmit = evt => {
     this.props.authorize(this.state);
@@ -22,6 +50,8 @@ class AuthPage extends PureComponent {
   };
 
   render() {
+    const { name } = this.props;
+
     return (
       <div className="">
         <h1>GitHub folowers</h1>
@@ -29,7 +59,7 @@ class AuthPage extends PureComponent {
         <input
           type="text"
           id="name"
-          value={this.state.name}
+          value={name}
           onChange={this.onChange}
         />
         <br />
@@ -60,7 +90,8 @@ class AuthPage extends PureComponent {
 
 const mapStateToProps = state => ({
   name: getName(state),
-  token: getToken(state)
+  token: getToken(state),
+  isAuthorized: getIsAuthorized(state)
 });
 
 const mapDispatchToProps = {

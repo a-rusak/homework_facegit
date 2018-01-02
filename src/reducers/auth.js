@@ -3,10 +3,7 @@ import { authorize } from '../actions/auth';
 
 export default handleAction(
   authorize,
-  (state, action) => {
-    console.log(action);
-    return action.payload
-  },
+  (state, action) => action.payload,
   {
     name: `dex157`,
     token: ``
@@ -18,5 +15,5 @@ export const getIsAuthorized = state => {
 };
 export const getToken = state => state.auth.token;
 export const getName = state => {
-  return state.auth.name
+  return state.auth.name;
 };
