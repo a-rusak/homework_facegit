@@ -11,10 +11,13 @@ import { combineReducers } from 'redux';
   (state, action) => action.payload,
   ``
 ); */
-const users = handleAction(
+const data = handleAction(
   success,
-  (state, action) => action.payload,
-  []
+  (state, action) => {
+    console.log(action.payload);
+    return action.payload.data
+  },
+  null
 );
 const error = handleAction(
   failure,
@@ -41,8 +44,13 @@ const isFetching = handleActions(
 );
 
 export default combineReducers({
-  users,
+  data,
   error,
   isFetched,
   isFetching
 });
+
+export const getIsFetching = state => state.user.isFetching;
+export const getIsFetched = state => state.user.isFetched;
+export const getError = state => state.user.error;
+export const getData = state => state.user.data;
