@@ -10,17 +10,23 @@ import {
   takeLatest
 } from 'redux-saga/effects';
 import { getUserInformation } from '../api';
-import { getName } from '../reducers/auth';
+import {
+  getToken,
+  getName
+} from '../reducers/auth';
+import { authorize } from '../actions/auth';
 
 function* fetchUsers(action) {
   try {
-    const name = yield select(getName);
-    console.log('fetchUsers for:', name);
-
-    const result = yield call(
-      getUserInformation,
-      name
-    );
+    let name = action.payload;
+    const token = yield select(getToken);
+    if (name) {
+      yield put(authorize({ name, token }));
+    } else {
+      name = yield select(getName);
+    }
+    console.log(`fetchUsers`, name);
+    const result = yield call(getUserInformation, name);
     yield put(success(result));
   } catch (error) {
     yield put(failure(error));

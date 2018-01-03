@@ -1,14 +1,37 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { request } from '../../actions/users';
+import {
+  getName,
+  getToken,
+  getIsAuthorized
+} from '../../reducers/auth';
 import {
   getData,
   getIsFetched,
   getIsFetching,
   getError
 } from '../../reducers/users';
+import Followers from '../Followers';
 import './user-page.css';
 
 class UserPage extends PureComponent {
+  componentDidMount() {
+    this.props.request();
+  }
+  componentWillReceiveProps(newProps) {
+    const name = this.props.match.params.name;
+    const newName = newProps.match.params.name;
+    if (name !== newName) {
+      console.log(
+        'User Page WillReceiveProps',
+        name,
+        newName
+      );
+      this.props.request(newName);
+    }
+  }
+
   render() {
     const {
       data,
@@ -33,7 +56,11 @@ class UserPage extends PureComponent {
             <header className="user__header">
               <h1>{data.name}</h1>
             </header>
-            <img className="user__photo" src={data.avatar_url} alt="" />
+            <img
+              className="user__photo"
+              src={data.avatar_url}
+              alt=""
+            />
             <section className="user__details">
               <dl>
                 <dt>Nickname:</dt>
@@ -50,19 +77,25 @@ class UserPage extends PureComponent {
             </section>
           </div>
         )}
+        <Followers />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  name: getName(state),
+  token: getToken(state),
+  isAuthorized: getIsAuthorized(state),
   data: getData(state),
   error: getError(state),
   isFetched: getIsFetched(state),
   isFetching: getIsFetching(state)
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  request
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   UserPage

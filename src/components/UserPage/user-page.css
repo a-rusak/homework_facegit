@@ -1,7 +1,6 @@
 .user__grid {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 10vw 30vw 10vw;
   grid-gap: 1em;
 }
 .user__header {
@@ -9,4 +8,10 @@
 }
 .user__photo {
   width: 100%
+}
+
+.followers__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+  grid-gap: 3em;
 }

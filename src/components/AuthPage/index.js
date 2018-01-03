@@ -25,7 +25,7 @@ class AuthPage extends PureComponent {
     const { name, token, isAuthorized, history } = newProps;
 
     console.log(
-      'componentWillReceiveProps',
+      'Auth Page WillReceiveProps',
       name,
       token,
       isAuthorized,

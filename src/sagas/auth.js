@@ -6,7 +6,6 @@ import {
   takeLatest
 } from 'redux-saga/effects';
 import { authorize, logout } from '../actions/auth';
-import { request, success } from '../actions/users';
 import { setTokenApi, clearTokenApi } from '../api';
 import {
   getIsAuthorized,
@@ -39,18 +38,14 @@ export function* authFlow() {
         token = localStorageToken;
         const name = yield select(getName);
         yield put(authorize({name, token}));
-        console.log('put authorize');
       } else {
         yield take(authorize);
-        console.log('take authorize');
         token = yield select(getToken);
       }
     }
 
     token = yield select(getToken);
     yield call(setTokenApi, token);
-    yield put(request());
-    yield take(success);
     yield call(setTokenToLocalStorage, token);
 
     yield take(logout);
