@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import Spinner from 'react-svg-spinner';
+
 import { request } from '../../actions/users';
 import {
   getName,
@@ -34,6 +36,7 @@ class UserPage extends PureComponent {
 
   render() {
     const {
+      name,
       data,
       error,
       isFetched,
@@ -50,7 +53,7 @@ class UserPage extends PureComponent {
 
     return (
       <div className="wrapper">
-        {isFetching && <h1>Идет загрузка</h1>}
+        {isFetching && <Spinner size="64px" color="cyan" gap={5} />}
         {isFetched && (
           <div className="user__grid">
             <header className="user__header">
@@ -77,7 +80,7 @@ class UserPage extends PureComponent {
             </section>
           </div>
         )}
-        <Followers />
+        <Followers name={name} /> 
       </div>
     );
   }

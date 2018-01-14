@@ -1,8 +1,4 @@
-import {
-  request,
-  success,
-  failure
-} from '../actions/followers';
+import { delay } from 'redux-saga';
 import {
   select,
   call,
@@ -10,6 +6,11 @@ import {
   takeLatest
 } from 'redux-saga/effects';
 
+import {
+  request,
+  success,
+  failure
+} from '../actions/followers';
 import { getUserFollowers } from '../api';
 import { getName } from '../reducers/auth';
 
@@ -22,6 +23,7 @@ function* fetchFollowers(action) {
       getUserFollowers,
       name
     );
+    yield delay(700); // fake loading delay
     yield put(success(result));
   } catch (error) {
     yield put(failure(error));

@@ -1,5 +1,5 @@
 import { handleAction, handleActions } from 'redux-actions';
-// import { normalize, schema } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 import {
   request,
   success,
@@ -10,14 +10,14 @@ import { combineReducers } from 'redux';
 const data = handleAction(
   success,
   (state, action) => {
-    /* const user = new schema.Entity('ids');
+    const user = new schema.Entity('ids');
     const mySchema = { data: [user] };
     const normalizedData = normalize(
       action.payload,
       mySchema
     );
-    return normalizedData.entities.ids; */
-    return action.payload.data;
+    return normalizedData.entities.ids;
+    // return action.payload.data;
   },
   null
 );

@@ -1,19 +1,17 @@
-import {
-  request,
-  success,
-  failure
-} from '../actions/users';
+import { delay } from 'redux-saga';
 import {
   select,
   call,
   put,
   takeLatest
 } from 'redux-saga/effects';
-import { getUserInformation } from '../api';
 import {
-  getToken,
-  getName
-} from '../reducers/auth';
+  request,
+  success,
+  failure
+} from '../actions/users';
+import { getUserInformation } from '../api';
+import { getToken, getName } from '../reducers/auth';
 import { authorize } from '../actions/auth';
 
 function* fetchUsers(action) {
@@ -27,6 +25,7 @@ function* fetchUsers(action) {
     }
     console.log(`fetchUsers`, name);
     const result = yield call(getUserInformation, name);
+    yield delay(500); // fake loading delay
     yield put(success(result));
   } catch (error) {
     yield put(failure(error));

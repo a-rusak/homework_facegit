@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { request } from '../../actions/followers';
+import Spinner from 'react-svg-spinner';
+
 import {
   getData,
   getIsFetched,
@@ -12,6 +14,18 @@ import Follower from '../Follower';
 class Followers extends PureComponent {
   componentDidMount() {
     this.props.request();
+  }
+  componentWillReceiveProps(newProps) {
+    const name = this.props.name;
+    const newName = newProps.name;
+    if (name !== newName) {
+      console.log(
+        'Followers Component WillReceiveProps',
+        name,
+        newName
+      );
+      this.props.request(newName);
+    }
   }
 
   render() {
@@ -33,13 +47,14 @@ class Followers extends PureComponent {
     return (
       <div className="wrapper">
         <h2>Followers</h2>
-        {isFetching && <p>loading…</p>}
+        {isFetching && <Spinner size="64px" color="cyan" gap={5} />}
         {isFetched && (
           <div className="followers__grid">
-            {data.map(follower => (
+            {Object.values(data).map(follower => (
               <Follower
                 key={follower.id}
                 login={follower.login}
+                avatar={follower.avatar_url}
               />
             ))}
           </div>
